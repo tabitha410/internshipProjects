@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Info Form</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Delivery Information</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="back.php" method="post" id="deliveryform">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="customer_id">Customer ID: </label>
+                                <input class="form-control" type="number" name="customer_id" id="customer_id"><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="order_id">Order ID: </label>
+                                <input class="form-control" type="number" name="order_id" id="order_id"><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="driver_name">Driver Name: </label>
+                                <input class="form-control" type="text" name="driver_name" id="driver_name"><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="contact_info">Contact Information: </label>
+                                <textarea class="form-control" name="contact_info" id="contact_info" ></textarea><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="transport_means">Transport Means: </label>
+                                <input class="form-control" type="text" name="transport_means" id="transport_means"><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="current_location">Current Location: </label>
+                                <input class="form-control" name="current_location" id="current_location"><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="delivery_time">Delivery Time: </label>
+                                <input class="form-control" type="datetime-local" name="delivery_time" id="delivery_time">
+                            </div>
+                            <input type="hidden" name="insert" value="insert">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Submit</button><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br>
+                            <div id="records">
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#deliveryform").on("submit", function(evt){
+                evt.preventDefault()       //to prevent the page from reloading        
+
+                let url = $(this).attr("action");     //to make it recognize the PHP file
+                let form_data = $(this).serialize()   //gets what the user entered
+                console.log(form_data)                //logs what the user entered
+                console.log("Form submitted", url)    //logs back.php along with the text
+                $.post(url,form_data,function(data){
+                    console.log(data)
+                })
+
+                
+            })
+        })
+
+        getRecords()
+
+        function getRecords(){
+            let retrieve = "retrieve"
+            $.post("back.php",{retrieve:retrieve},function(data){
+                // console.log(data)
+                $("#records").html(data)
+
+                $(".view-record").on("click", function(evt){
+                    evt.preventDefault()
+                    let order_id = $(this).attr("order_id")
+                    console.log(order_id)
+                    let getsinglerecord = "getsinglerecord"
+                    $.post("back.php",{order_id:order_id,getsinglerecord},function(formdata){
+                        console.log(formdata)
+                        let result = formdata.split(";")
+                        console.log(result)
+                        $("#order_id").val(result[0])
+                        $("#driver_name").val(result[1])
+                        $("#contact_info").val(result[2])
+                        $("#transport_means").val(result[3])
+                        $("#customer_id").val(result[4])
+                        $("#current_location").val(result[5])
+                        $("#delivery_time").val(result[6])
+                    })
+
+
+                })
+            })
+        }
+
+    </script>
+    
+</body>
+</html>

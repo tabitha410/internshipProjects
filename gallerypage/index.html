@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature Gallery</title>
+    <link rel="stylesheet" href="css/gallery.css">
+</head>
+<body>
+    <div class="body">
+        <h1>Nature Gallery 🌸</h1>
+        <div class="container">
+            <div class="row">
+                <div class="column">
+                    <img src="img/tree-736885_1280.jpg" alt="Sunset" style="width: 20%; height: 152px;" onclick="gallery(this)">
+                </div>
+                <div class="column">
+                    <img src="img/opWtiM.jpg" alt="" id="img1" style="width: 20%; height: 152px;" onclick="gallery(this)">
+                </div>
+                <div class="column">
+                    <img src="img/tree-photography-fawn-in-the-forest.jpg" id="img2" style="width: 20%; height: 152px;" alt="Forest" onclick="gallery(this)">
+                </div>
+                <div class="column">
+                    <img src="img/Bauer-Keith-2-1000x665.jpg" alt="Birds" id="img3" style="width: 20%; height: 152px;" onclick="gallery(this)">
+                </div>
+            </div>
+            <div class="container" id="clickedimg">
+                <span onclick="this.parentElement.style.display='none'" class="closebtn" id="closebtn">X</span>
+                <img style="width: 100%;" id="biggerimg">
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/gallery.js"></script>
+    
+</body>
+</html>

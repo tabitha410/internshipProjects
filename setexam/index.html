@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set exam</title> 
+    <link rel="stylesheet" href="css/bootstrap.min.css">  
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Set Exam</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="back.php" method="post">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="exam">Exam Name: </label><br>
+                                <input class="form-control" type="text" name="exam" id="exam" required><br><br>
+                            </div>
+
+                            <div class="col-6">
+                                <label for="examdate">Exam Date: </label><br>
+                                <input class="form-control" type="date" name="examdate" id="examdate" required><br><br>
+
+                            </div>
+
+                            <div class="col-6">
+                                <label for="description">Description:</label><br>
+                                <textarea class="form-control" name="description" id="description"></textarea><br><br>
+                            </div>
+
+                            <div class="col-6">
+                                <label for="entrydate">Entry Date: </label><br>
+                                <input class="form-control" type="datetime-local" name="entrydate" id="entrydate" required><br><br>
+                            </div>
+
+                            <div class="col-12">
+                                <button onclick="window.location.href='questions.html'" name="submit" id="submit" class="btn btn-success">Submit</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            let senddata = {click:"click"}
+            $("#submit").on("click", function(evt){
+                evt.preventDefault()
+
+                let exam = $("#exam").val()
+                let description = $("#description").val()
+                let examdate = $("#examdate").val()
+                let entrydate = $("#entrydate").val()
+
+                $.post("back.php", {click:"click", exam: exam, description: description, examdate: examdate, entrydate: entrydate},function(data){
+                    console.log(data)
+                })
+            })
+        })
+    </script>
+</body>
+</html>

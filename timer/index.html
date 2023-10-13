@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Countdown Timer</h1>
+
+        <form action="back.php" method="post">
+            <label>Set Timer: </label>
+            <input type="number" placeholder="Hours" min="0" max="23" id="hours" >
+            <input type="number" placeholder="Minutes" min="0" max="60" id="minutes" >
+            <input type="number" placeholder="Seconds" min="0" max="60" id="seconds" ><br><br>
+
+            <button id="startButton">Start Timer</button><button id="stopButton">Stop Timer</button><button id="pauseButton">Pause Timer</button><br><br>
+            <div id="container">
+                <div id="display"></div> 
+                <div id="info"></div>
+                <div id="resumebtn"></div>
+            </div>
+        </form>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            //write to a database
+            let senddata = {click:"click"}
+            $("#stopButton, #pauseButton") .on("click", function(evt){
+                evt.preventDefault()
+
+                let hours = parseInt($("#hours").val()) || 0;
+                let minutes = parseInt($("#minutes").val()) || 0;
+                let seconds = parseInt($("#seconds").val()) || 0;
+
+                
+                let displayText = $("#display").text();
+                let currentCountdownTime = displayText || "00:00:00";
+                
+                
+                $.post("back.php",{click:"click",hours: hours, minutes: minutes, seconds: seconds, currentCountdownTime: currentCountdownTime, currTime: currentCountdownTime},function(data){
+                    console.log(data)
+                    let record = data.split(":")
+                        console.log(record)
+                        $("#hours").val(record[0])
+                        $("#minutes").val(record[1])
+                        $("#seconds").val(record[2])
+                })
+
+           
+                
+
+                
+
+                
+        })
+
+
+        getTime();
+
+// read from a database
+function getTime(){
+    
+  
+        let currTime = "currTime"
+        
+        $.post("back.php",{currTime: currTime}, function(data){
+            console.log(data)
+            let record = data.split(":")
+            console.log(record)
+            $("#hours").val(record[0])
+            $("#minutes").val(record[1])
+            $("#seconds").val(record[2])
+        })
+    
+}    
+
+
+
+    })
+
+
+
+    </script>
+</body>
+</html>

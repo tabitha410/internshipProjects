@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="row justify-content-center">
+
+        <div class="col-6">
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="tictactoe.js"></script>
+
+
+    <script>
+    $(document).ready(function(){
+
+
+        // $("#info").text("Welcome Tabitha")
+        $("#info").attr("style", "color:green;font-size:28px;font-family:cursive;");
+        $("#info").show()
+    
+        $(".col-4").attr("style", "height:50px;border:2px solid green;")
+        $(".col-4").on("click", function(evt){
+            evt.preventDefault()
+            $(this).html("<span style='font-size:30'>X</span>")
+        })
+        // $("#personname").val("Tabitha")        //to put like a placeholder text i guess
+    
+        $("#displayname").click(function(){
+            let personname = $("#personname").val();
+            $("#info").text("Welcome," + " " + personname + "!")
+        })
+    
+    })
+    </script>
+</body>
+</html>

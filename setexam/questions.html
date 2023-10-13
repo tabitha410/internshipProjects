@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set questions</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <style>
+        #info{
+            color: green;
+            font-size: 20px;
+            font-weight: 500;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Set Questions</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="questions.php" method="post" id="setquestions">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <div id="info"></div>
+                
+                                <label for="examid">Exam ID: </label><br>
+                                <select id="examid" class="form-control" name="examid"></select><br><br>
+                                <!-- <input type="number" name="examid" id="examid"><br><br> -->
+                            </div>
+
+                            <div class="col-6">
+                                <label for="question">Question:</label><br>
+                                <textarea class="form-control" name="question" id="question"></textarea><br><br>
+                            </div>
+
+                            <div class="col-6">
+                                <label for="questiontype">Question Type: </label><br>
+                                <select class="form-control" name="questiontype" id="questiontype">
+                                    <option value="multiple_choice">Multiple Choice</option>
+                                    <option value="true_false">True/False</option>
+                                    <option value="short_answer">Short Answer</option>
+                                </select><br><br>
+                            </div>
+
+                            <div class="col-6">
+                                <label for="exhibit">Exhibit: </label><br>
+                                <input class="form-control" type="file" name="exhibit" id="exhibit"><br><br>
+                            </div>
+
+                            <div class="col-9">
+                                <input type="hidden" name="submit" value="submit">
+                                <button type="submit" name="submit" id="add" class="btn btn-success">Add</button>
+
+                                <input type="hidden" name="record_id" id="record_id">
+                                <button type="button" id="delete" class="btn btn-success">Delete</button>
+                                <button type="button" id="update" class="btn btn-success">Update</button>
+                                <button onclick="window.location.href='setanswers/answers.html'" class="btn btn-success" >Input Answers</button>
+                            </div>
+
+                            <div id="records"></div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>       
+    
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            //writing to the DB
+            $("#setquestions").on("submit",function(evt){
+                evt.preventDefault()
+
+                let url = $(this).attr("action")
+                let data = $(this).serialize()
+                console.log(data)
+                $.post(url, data, function(questdata){
+                    getRecords()
+
+                    $("#info").text("Added successfully").fadeIn().delay(2000).fadeOut();
+                })
+            })
+
+            // getRecords()
+
+            function getRecords(){
+                let examid = $("#examid").val();
+                let retrieve = "retrieve"
+                $.post("questions.php",{examid:examid, retrieve:retrieve},function(data){
+                    $("#records").html(data)
+
+                    $(".edit-record").on("click",function(evt){
+                        evt.preventDefault()
+                        let id = $(this).attr("data-id")
+                        // console.log(id)
+
+                        let editRecord = "editRecord"
+                        $.post("questions.php",{id:id,editRecord},function(data){
+                            console.log(data)
+
+                            let record = data.split(";")
+                            console.log(record)
+
+                            $("#record_id").val(record[0])
+                            $("#examid").val(record[1])
+                            $("#question").val(record[2])
+                            $("#questiontype").val(record[3])
+                            $("#entrydate").val(record[4])
+                            $("#exhibit").val(record[5])
+                        })
+                    })
+                })
+            }
+
+            //delete records
+            $("#delete").on("click", function(evt){
+                evt.preventDefault()
+                let id = $("#record_id").val();
+
+                $.post("questions.php",{id: id, deleteRecord: true}, function(data){
+
+                    getRecords()
+                    $("#info").text("Deleted successfully").fadeIn().delay(2000).fadeOut();
+                })
+                
+            })
+
+
+            //Update records
+            $("#update").on("click", function(evt){
+                evt.preventDefault()
+                let id = $("#record_id").val()
+                let updatedQuestion = $("#question").val()
+                let updatedQT = $("#questiontype").val()
+                let updatedExhibit = $("#exhibit").val()
+
+                $.post("questions.php",{id:id, updatedQuestion:updatedQuestion, updatedQT:updatedQT, updatedExhibit:updatedExhibit, updateRecord:true}, function(data){
+                    getRecords();
+
+                    $("#info").text("Updated successfully").fadeIn().delay(2000).fadeOut();
+                })
+            })
+
+
+
+            //get examinations
+            let getExamination = "getExamination"
+            $.post("questions.php",{getExamination:getExamination},function(examdata){
+                console.log(examdata)
+                let exams = JSON.parse(examdata)
+                console.log(exams)
+                let examoptions = ``
+                $.each(exams, function(key, val){
+                    console.log(val.exam)
+                    examoptions += `<option value="` + val.id + `">` + val.exam + ` [` + val.examdate + `]</option>`
+                })
+                $("#examid").html(examoptions)
+            })
+        })
+    </script>
+</body>
+</html>

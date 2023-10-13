@@ -1,0 +1,75 @@
+body {
+  background: skyblue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+h1{
+  color: #f0f0f0;
+  font-weight: 900;
+  font-size: 50px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.grid {
+  width: 200px;
+  height: 200px;
+  background-color: #f0f0f0;
+  border: 5px solid #096fc2;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid div {
+  width: 20px;
+  height: 20px;
+}
+
+.snake {
+  background: #2E05FD;
+  border-radius: 1px;
+}
+
+.apple {
+  background: red;
+  border-radius: 20px;
+}
+
+.playAgain {
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px;
+  background-color: #096fc2;
+  color: white;
+  border: none;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+.playAgain:hover{
+  background-color: blue
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+}
+
+.button button {
+  padding: 10px 20px;
+  background-color: #096fc2;
+  color: white;
+  border: none;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.button button:hover {
+  background-color: blue;
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Information Form</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Customer Information</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="script.php" method="post" id="customerform">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="name">Name: </label><br>
+                                <input class = "form-control" type="text" name="name" id="name" required><br>
+                            </div>
+
+                            <div class="col-6">
+                                <label for="phone_number">Phone Number: </label><br>
+                                <input class="form-control" type="text" name="phone_number" id="phone_number"><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="email">Email: </label><br>
+                                <input class = "form-control" type="email" name="email" id="email"><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="password">Password: </label><br>
+                                <input class="form-control" type="password" name="password" id="password"><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="address">Address: </label><br>
+                                <textarea class = "form-control" name="address" id="address" ></textarea><br>
+                            </div>
+                            <input type="hidden" name="insert" value="insert">
+                            <div class="col-12">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br>
+                            <div id="records">
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#customerform").on("submit",function(evt){
+                evt.preventDefault()                  //to prevent the page from reloading
+
+                let url = $(this).attr("action")      //to make it recognize the script file
+                let form_data = $(this).serialize()   //gets what the user entered
+                console.log(form_data)                //logs what the user entered
+                console.log("Form submitted",url)     //logs script.php along with the text
+                $.post(url,form_data,function(data){
+                    console.log(data)
+                    getRecords()
+                })
+            })
+
+            getRecords()
+
+            function getRecords(){
+                let retrieve = "retrieve"
+                $.post("script.php",{retrieve:retrieve},function(data){
+                    // console.log(data)
+                    $("#records").html(data)
+
+                    $(".view-record").on("click", function(evt){
+                        evt.preventDefault()
+                        let id = $(this).attr("data-id")
+                        console.log(id)
+                        let getsinglerecord = "getsinglerecord"
+                        $.post("script.php",{id:id,getsinglerecord},function(formdata){     
+                            console.log(formdata)
+                            let record = formdata.split(";")
+                            console.log(record)
+                            $("#name").val(record[1])
+                            $("#address").val(record[2])
+                            $("#phone_number").val(record[3])
+                            $("#email").val(record[4])
+                            $("#password").val(record[5])
+                        })
+                    })
+                })
+            }
+        })
+    </script>
+    
+</body>
+</html>

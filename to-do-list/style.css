@@ -1,0 +1,12 @@
+#to_do_list{
+    list-style-type: none;
+    padding: 0px;
+}
+.to_do_item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: solid #ccc 1px;
+    margin-bottom: 5px;
+    padding: 5px;
+}

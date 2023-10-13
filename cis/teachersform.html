@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Information Form</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Teacher Information</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="teacherinfo.php" method="post">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="first_name">First Name:</label><br>
+                                <input class="form-control" type="text" id="first_name" name="first_name" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="last_name">Last Name:</label><br>
+                                <input class="form-control" type="text" id="last_name" name="last_name" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="gender">Gender:</label><br>
+                                <select class="form-control" id="gender" name="gender">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="address">Address:</label><br>
+                                <textarea class="form-control" id="address" name="address" required></textarea><br></div>
+                            <div class="col-6">
+                                <label for="contact_info">Contact Information:</label><br>
+                                <input class="form-control" type="text" id="contact_info" name="contact_info" required><br></div>
+                            <div class="col-6">
+                                <label for="subjects_taught">Subjects Taught:</label><br>
+                                <input class="form-control" type="text" id="subjects_taught" name="subjects_taught" required><br>
+                            </div>
+                            <div class="col-12">
+                                <input type="submit" class="btn btn-primary" value="Submit">
+                            </div>
+                        </div>
+                    </div>
+                   
+        
+                    
+        
+                   
+        
+                    
+        
+                    
+        
+                    
+        
+                    
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

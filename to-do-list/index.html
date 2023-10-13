@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" placeholder="Enter tasks here" id="tasks">
+        <button onclick="addTask()" id="addBtn">Add</button><br>
+        <div id="info"></div>
+        <ul id="to_do_list"></ul>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            //writing to the DB
+            let senddata = {click:"click"}
+            $("#addBtn").on("click", function(evt){
+                evt.preventDefault()
+
+                let task = $("#tasks").text()
+
+                $.post("script.php",{click:"click",task: task}, function(data){
+                    console.log(data)
+                })
+            })
+        })
+    </script>
+</body>
+</html>

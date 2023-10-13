@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Answers</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <style>
+        #info{
+            color: green;
+            font-size: 20px;
+            font-weight: 500;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Input answers</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="back.php" method="post" id="inputanswers">
+                    <div class="container">
+                        <div class="row">
+                            <div id="info"></div>
+                            <div class="col-9">
+                                <label for="questionid">Question ID: </label><br>
+                                <select class="form-control" name="questionid" id="questionid"></select><br><br>
+                            </div>
+
+                            <div class="col-9">
+                                <label for="answers">Answers: </label><br>
+                                <textarea class="form-control" name="answers" id="answers"></textarea><br><br>
+                            </div>
+
+                            <div class="col-9">
+                                <label for="exhibit">Exhibit: </label><br>
+                                <input type="file" name="exhibit" id="exhibit" class="form-control"><br><br>
+                            </div>
+
+                            <input type="hidden" name="add" value="add">
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-success" id="addBtn">Add</button>
+                            
+                                <input type="hidden" name="record_id" id="record_id">
+                                <button type="button" class="btn btn-success" id="deleteBtn">Delete</button>
+                                <button type="button" class="btn btn-success" id="updateBtn">Update</button>
+                            </div>
+
+                            <div id="records"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            //writing to the DB 
+            $("#inputanswers").on("submit",function(evt){
+                evt.preventDefault()
+
+                let url = $(this).attr("action")
+                let data = $(this).serialize()
+                console.log(data)
+                $.post(url, data, function(ansdata){
+                    getRecords()
+                    displayAddMessage("#info")
+                })
+            })
+
+            function getRecords(){
+                let questionid = $("#questionid").val();
+                let obtain = "obtain"
+                $.post("back.php", {questionid:questionid,obtain:obtain}, function(data){
+                    $("#records").html(data)
+                    
+                    $(".edit-record").on("click", function(evt){
+                        evt.preventDefault()
+                        let id = $(this).attr("data-id")
+                        
+                        let editRecord = "editRecord"
+                        $.post("back.php",{id:id,editRecord},function(data){
+                            console.log(data)
+
+                            let record = data.split(";")
+                            console.log(record)
+
+                            $("#record_id").val(record[0])
+                            $("#questionid").val(record[1])
+                            $("#answers").val(record[2])
+                            $("#exhibit").val(record[3])
+                            $("#entrydate").val(record[4])
+                        })
+                    })
+                })
+            }
+
+            //delete records
+            $("#deleteBtn").on("click", function(evt){
+                evt.preventDefault()
+                let id = $("#record_id").val();
+
+                $.post("back.php",{id: id, deleteRecord: true}, function(data){
+                    getRecords()
+                    displayDeleteMessage("#info")
+                })
+                
+            })
+
+
+            //Update records
+            $("#updateBtn").on("click", function(evt){
+                evt.preventDefault()
+                let id = $("#record_id").val()
+                let updatedAnswer = $("#answers").val()
+                let updatedExhibit = $("#exhibit").val()
+
+                $.post("back.php",{id:id, updatedAnswer:updatedAnswer, updatedExhibit:updatedExhibit, updateRecord:true}, function(data){
+                    displayUpdateMessage("#info")
+                    getRecords();
+                })
+            })
+
+
+            //get questions
+            let getQuestion = "getQuestion"
+            $.post("back.php",{getQuestion: getQuestion}, function(questiondata){
+                console.log(questiondata)
+                let questions = JSON.parse(questiondata)
+                console.log(questions)
+
+                let questionoptions = ``
+                $.each(questions, function(key, val){
+                    console.log(val.question)   //column name 'question' used here
+                    questionoptions += `<option value="` + val.id + `">` + val.question + ` [` + val.entrydate + `]</option>`
+                })
+                $("#questionid").html(questionoptions)
+            })
+
+
+            function displayAddMessage(messageId) {
+                $(messageId).text("Added successfully").fadeIn().delay(2000).fadeOut();
+            }
+            function displayDeleteMessage(messageId){
+                $(messageId).text("deleted successfully").fadeIn().delay(2000).fadeOut();
+            }
+            function displayUpdateMessage(messageId){
+                $(messageId).text("updated successfully").fadeIn().delay(2000).fadeOut();
+            }
+
+        })
+
+    </script>
+</body>
+</html>
